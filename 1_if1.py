@@ -19,7 +19,32 @@ def main():
     Эта функция вызывается автоматически при запуске скрипта в консоли
     В ней надо заменить pass на ваш код
     """
-    pass
+    try:
+
+      age_input = int(input("Ведите свой возраст: "))
+
+      def what_person_do (age):
+
+        if age >= 0 and age < 7:
+          text = print ("Привет дедсадовцам!") 
+          return text
+        elif age >= 7 and age < 17:
+           text = print ("Есть вероятность что Вы еще щкольник.")
+           return text
+        elif age >=17 and age < 22:
+           text = print ("Примите поздравления, Вы - студент!")
+           return text
+        elif age >= 22:
+           text = print ("Добро пожаловать в ряды трудового населения :)")
+           return text
+        else:
+           text = print ("Вы ввели отрицательное значение")
+           return text
+      
+      what_person_do (age_input)
+
+    except ValueError:
+      print ("Ошибка: ведите Ваш возрст числом")
 
 if __name__ == "__main__":
     main()
