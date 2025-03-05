@@ -13,19 +13,22 @@
 * Вывести содержимое переменной на экран
 
 """
-def what_person_do (age):
+
+
+def what_person_do(age):
 
     if age < 0:
-      return "Вы ввели отрицательное значение"
+        return "Вы ввели отрицательное значение"
     elif age < 7:
-      return "Привет дедсадовцам!"
+        return "Привет дедсадовцам!"
     elif age < 17:
-      return "Есть вероятность что Вы щкольник."
+        return "Есть вероятность что Вы щкольник."
     elif age < 22:
-      return "Примите поздравления, Вы - студент!"
+        return "Примите поздравления, Вы - студент!"
     else:
-      return "Вы готовы к трудовым подвигам"
- 
+        return "Вы готовы к трудовым подвигам"
+
+
 def main():
     """
     Эта функция вызывается автоматически при запуске скрипта в консоли
@@ -33,11 +36,12 @@ def main():
     """
     try:
         age_input = int(input("Введите свой возраст: "))
-        fun_value = what_person_do (age_input)
-        print (fun_value)
+        fun_value = what_person_do(age_input)
+        print(fun_value)
 
     except ValueError:
-        print ("Ошибка: ведите Ваш возрст числом")
+        print("Ошибка: ведите Ваш возрст числом")
+
 
 if __name__ == "__main__":
     main()
