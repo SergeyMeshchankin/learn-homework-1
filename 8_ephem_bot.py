@@ -13,44 +13,51 @@
 
 """
 import logging
+import setting
+import ephem
 
-from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
+from datetime import datetime
+from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
 
 logging.basicConfig(format='%(name)s - %(levelname)s - %(message)s',
                     level=logging.INFO,
                     filename='bot.log')
 
 
-PROXY = {
-    'proxy_url': 'socks5://t1.learn.python.ru:1080',
-    'urllib3_proxy_kwargs': {
-        'username': 'learn',
-        'password': 'python'
-    }
-}
+async def greet_user(update, context):
+    await update.message.reply_text("Привет! Я бот-астроном. Используй /planet <название планеты>")
 
 
-def greet_user(update, context):
-    text = 'Вызван /start'
-    print(text)
-    update.message.reply_text(text)
+async def talk_to_me(update, context):
+    await update.message.reply_text("Я понимаю только команду /planet")
 
 
-def talk_to_me(update, context):
-    user_text = update.message.text
-    print(user_text)
-    update.message.reply_text(text)
+async def planet_command(update, context):
+    command_parts = update.message.text.split()
+
+    if len(command_parts) < 2:
+        await update.message.reply_text("Пример команды: /planet Mars")
+        return
+
+    planet_name = command_parts[1].capitalize()
+    today = datetime.now().strftime("%Y/%m/%D")
+
+    if hasattr(ephem, planet_name):
+        planet = getattr(ephem, planet_name)(today)
+        constellation = ephem.constellation(planet)[1]
+        await update.message.reply_text(f"{planet_name} сегодня в созвездии {constellation}")
+    else:
+        await update.message.reply_text("Такую планету я не знаю")
 
 
 def main():
-    mybot = Updater("КЛЮЧ, КОТОРЫЙ НАМ ВЫДАЛ BotFather", request_kwargs=PROXY, use_context=True)
+    mybot = ApplicationBuilder().token(setting.API_KEY).build()
 
-    dp = mybot.dispatcher
-    dp.add_handler(CommandHandler("start", greet_user))
-    dp.add_handler(MessageHandler(Filters.text, talk_to_me))
+    mybot.add_handler(CommandHandler("start", greet_user))
+    mybot.add_handler(CommandHandler("planet", planet_command))
+    mybot.add_handler(MessageHandler(filters.TEXT, talk_to_me))
 
-    mybot.start_polling()
-    mybot.idle()
+    mybot.run_polling()
 
 
 if __name__ == "__main__":
