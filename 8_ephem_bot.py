@@ -11,6 +11,8 @@
 * При помощи условного оператора if и ephem.constellation научите
   бота отвечать, в каком созвездии сегодня находится планета.
 
+* Используется версия python-telegram-bot v22.0
+
 """
 import logging
 import setting
